@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ryma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            /* Warm, glowing romantic gradient */
+            background: radial-gradient(circle, #ffafbd, #ffc3a0, #ff677d);
+            background-size: 200% 200%;
+            animation: gradientBG 10s ease infinite;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Falling Petals */
+        .petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .petal {
+            position: absolute;
+            background-color: #ff4d6d;
+            border-radius: 150% 0 150% 0;
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+            z-index: 10;
+            text-shadow: 2px 4px 15px rgba(255, 77, 109, 0.5);
+        }
+
+        /* Polaroid Frame */
+        .frame {
+            background: white;
+            padding: 15px 15px 60px 15px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            transform: rotate(-3deg);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            max-width: 320px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .frame:hover {
+            transform: rotate(0deg) scale(1.1);
+            box-shadow: 0 30px 60px rgba(255, 77, 109, 0.3);
+        }
+
+        .frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 2px;
+        }
+
+        /* Romantic Message */
+        #special-message {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #fff;
+            margin-top: 40px;
+            text-align: center;
+            opacity: 0;
+            padding: 0 20px;
+            transition: all 1.5s ease;
+            transform: translateY(30px);
+            z-index: 10;
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+            line-height: 1.2;
+        }
+
+        .instruction {
+            color: #ff4d6d;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        /* Heart Animation for Click */
+        .heart {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 100;
+            animation: heartFloat 2s forwards;
+        }
+
+        @keyframes heartFloat {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="petal-container" id="petal-box"></div>
+
+    <h1>For Ryma...</h1>
+
+    <div class="frame" onclick="showLove(event)">
+        <img src="Rose.png" alt="Flowers for Ryma">
+        <div class="instruction">Tap with love</div>
+    </div>
+
+    <div id="special-message">
+        "In a world full of temporary things, <br>you will be my forever." ❤️
+    </div>
+
+    <script>
+        function showLove(e) {
+            const msg = document.getElementById('special-message');
+            msg.style.opacity = '1';
+            msg.style.transform = 'translateY(0)';
+            
+            // Create a heart burst at the click location
+            for(let i=0; i<10; i++) {
+                createHeart(e.clientX, e.clientY);
+            }
+            
+            // Extra petals
+            for(let i=0; i<15; i++) {
+                setTimeout(() => createPetal(true), i * 60);
+            }
+        }
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart';
+            heart.style.left = (x - 20 + (Math.random() * 40)) + 'px';
+            heart.style.top = (y - 20 + (Math.random() * 40)) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2000);
+        }
+
+        const container = document.getElementById('petal-box');
+        function createPetal(burst) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const size = Math.random() * 18 + 10 + 'px';
+            petal.style.width = size;
+            petal.style.height = size;
+            
+            if (burst) {
+                petal.style.top = '50vh';
+                petal.style.left = '50vw';
+                petal.style.backgroundColor = '#fff'; // White petals for the burst
+            } else {
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.top = '-10vh';
+            }
+
+            petal.style.animationDuration = Math.random() * 3 + 4 + 's';
+            container.appendChild(petal);
+            setTimeout(() => petal.remove(), 6000);
+        }
+
+        // Keep the petals falling
+        setInterval(() => createPetal(false), 500);
+    </script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>For Sabrine</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300&display=swap" rel="stylesheet">
     <style>
@@ -22,10 +22,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            /* Allow scrolling */
+            overflow-x: hidden;
+            overflow-y: auto; 
             min-height: 100vh;
-            overflow: hidden;
             width: 100%;
+            padding-bottom: 50px; /* Space at the bottom */
         }
 
         @keyframes gradientBG {
@@ -34,7 +36,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Falling Petals */
+        /* Falling Petals - Fixed to viewport so they don't grow the page */
         .petal-container {
             position: fixed;
             top: 0;
@@ -59,26 +61,25 @@
 
         h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(3rem, 12vw, 5rem);
+            font-size: clamp(3.5rem, 15vw, 5.5rem);
             color: #fff;
-            margin: 0 0 15px 0;
+            margin: 40px 0 20px 0;
             z-index: 10;
             text-shadow: 2px 4px 10px rgba(251, 111, 146, 0.4);
             text-align: center;
         }
 
-        /* Polaroid Frame Responsive */
         .frame {
             background: white;
-            padding: 10px 10px 45px 10px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 12px 12px 50px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             transform: rotate(-1.5deg);
             cursor: pointer;
             transition: all 0.4s ease;
             z-index: 5;
-            width: 85%;
+            width: 80%;
             max-width: 280px;
-            margin: 0 auto;
+            margin-bottom: 30px;
         }
 
         .frame:active {
@@ -95,36 +96,40 @@
         .message-container {
             z-index: 10;
             text-align: center;
-            padding: 0 15px;
+            padding: 0 25px;
             width: 100%;
+            max-width: 500px;
         }
 
         #special-message {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(1.8rem, 8vw, 3rem);
+            font-size: clamp(2.2rem, 10vw, 3.2rem);
             color: #fff;
-            margin-top: 25px;
+            margin-top: 10px;
             opacity: 0;
             transition: all 1.2s ease;
             transform: translateY(20px);
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 8px rgba(0,0,0,0.1);
             line-height: 1.2;
         }
 
         #apology-message {
-            font-size: clamp(0.85rem, 4vw, 1.1rem);
-            margin-top: 15px;
+            font-size: clamp(1rem, 4.5vw, 1.2rem);
+            margin-top: 20px;
             opacity: 0;
             transition: all 1.8s ease 0.8s;
             font-style: italic;
             color: #fff;
             font-weight: 300;
-            padding: 0 10px;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
         }
 
         .instruction {
             color: #fb6f92;
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             letter-spacing: 2px;
             margin-top: 10px;
             text-transform: uppercase;
@@ -134,8 +139,8 @@
         }
 
         .heart {
-            position: absolute;
-            font-size: 1.5rem;
+            position: fixed; /* Fixed so they don't move with scroll */
+            font-size: 1.8rem;
             pointer-events: none;
             z-index: 100;
             animation: heartFloat 2s forwards;
@@ -143,7 +148,7 @@
 
         @keyframes heartFloat {
             0% { transform: scale(0); opacity: 1; }
-            100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+            100% { transform: translateY(-150px) scale(1.8); opacity: 0; }
         }
     </style>
 </head>
@@ -163,7 +168,7 @@
             "I love you to death, Sabrine. <br>In a world of temporary things, you are my forever." ❤️
         </div>
         <div id="apology-message">
-            I've never given you proper flowers but I could at least do this for you <br>
+            I've never given you proper flowers, I know its not much but I could at least do this for you <br>
             I apologize if I ever hurt you... <br>
             Thank you for everything you've done for me.
         </div>
@@ -175,16 +180,11 @@
             document.getElementById('special-message').style.transform = 'translateY(0)';
             document.getElementById('apology-message').style.opacity = '1';
             
-            // Get coordinates for both mouse and touch
             const charX = e.clientX || (e.touches && e.touches[0].clientX);
             const charY = e.clientY || (e.touches && e.touches[0].clientY);
 
-            for(let i=0; i<10; i++) {
+            for(let i=0; i<12; i++) {
                 setTimeout(() => createHeart(charX, charY), i * 50);
-            }
-            
-            for(let i=0; i<20; i++) {
-                setTimeout(() => createPetal(true), i * 30);
             }
         }
 
@@ -192,42 +192,34 @@
             const heart = document.createElement('div');
             heart.innerHTML = '❤️';
             heart.className = 'heart';
-            heart.style.left = (x - 10 + (Math.random() * 40 - 20)) + 'px';
-            heart.style.top = (y - 10 + (Math.random() * 40 - 20)) + 'px';
+            heart.style.left = (x - 15) + 'px';
+            heart.style.top = (y - 15) + 'px';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 2000);
         }
 
         const container = document.getElementById('petal-box');
         
-        function createPetal(burst) {
+        function createPetal() {
             const petal = document.createElement('div');
             petal.classList.add('petal');
             
-            const size = Math.random() * 10 + 6 + 'px';
+            const size = Math.random() * 12 + 8 + 'px';
             const colors = ['#ffffff', '#ffe5ec', '#ffc2d1', '#ffb3c1'];
             
             petal.style.width = size;
             petal.style.height = size;
             petal.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            if (burst) {
-                petal.style.top = '40vh';
-                petal.style.left = '50vw';
-            } else {
-                petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.top = '-10vh';
-            }
-
-            petal.style.animationDuration = Math.random() * 3 + 3 + 's';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.top = '-10vh';
+            petal.style.animationDuration = Math.random() * 3 + 4 + 's';
             petal.style.opacity = Math.random() * 0.6 + 0.3;
             
             container.appendChild(petal);
-            setTimeout(() => petal.remove(), 5000);
+            setTimeout(() => petal.remove(), 6000);
         }
 
-        // High density falling petals
-        setInterval(() => createPetal(false), 250); 
+        setInterval(createPetal, 200); 
     </script>
 
 </body>
